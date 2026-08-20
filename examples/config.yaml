@@ -1,0 +1,46 @@
+# Application Configuration
+app:
+  name: contrast.nvim
+  version: "1.0.0"
+  debug: false
+
+# Database configuration
+database:
+  host: localhost
+  port: 5432
+  name: contrast_dev
+  pool:
+    min: 5
+    max: 20
+    idle_timeout: 30s
+
+# Redis cache
+cache:
+  - name: sessions
+    host: redis-1.local
+    port: 6379
+    db: 0
+  - name: rate_limit
+    host: redis-2.local
+    port: 6379
+    db: 1
+    ttl: 1h
+
+# Logging configuration
+logging:
+  level: info
+  format: json
+  outputs:
+    - type: stdout
+    - type: file
+      path: /var/log/app.log
+      max_size: 100MB
+      max_backups: 5
+
+# Feature flags
+features:
+  new_ui: true
+  dark_mode: enabled
+  experimental:
+    - ai_suggestions
+    - voice_input
