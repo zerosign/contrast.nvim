@@ -1,0 +1,4 @@
+examples/ export-ignore
+sandbox/ export-ignore
+justfile export-ignore
+.gitignore export-ignore
