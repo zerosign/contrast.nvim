@@ -371,10 +371,10 @@ function M.build(p)
   hl("FidgetTask", { fg = p.fg_muted })
 
   -- Indent blankline
-  hl("IndentBlanklineChar", { fg = p.fg_faint })
-  hl("IndentBlanklineContextChar", { fg = p.fg_dim })
-  hl("IblIndent", { fg = p.fg_faint })
-  hl("IblScope", { fg = p.fg_dim })
+  hl("IndentBlanklineChar", { fg = p.indent })
+  hl("IndentBlanklineContextChar", { fg = p.fg_faint })
+  hl("IblIndent", { fg = p.indent })
+  hl("IblScope", { fg = p.fg_faint })
 
   -- Which-key
   hl("WhichKey", { fg = p.fg_bright })
