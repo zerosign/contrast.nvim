@@ -237,6 +237,12 @@ function M.build(p)
   hl("CursorLine", { bg = p.cursor_line })
   hl("CursorColumn", { bg = p.cursor_line })
 
+  -- Color column (80-char ruler). Also used by render-markdown.nvim as the
+  -- fenced code block background (RenderMarkdownCode -> ColorColumn), so it
+  -- must be themed: the Neovim default (NvimLightGrey4) clashes badly with
+  -- the light palette and tanks contrast for code block text.
+  hl("ColorColumn", { bg = p.bg_subtle })
+
   -- Line numbers
   hl("LineNr", { fg = p.fg_faint })
   hl("CursorLineNr", { fg = p.fg_dim })
