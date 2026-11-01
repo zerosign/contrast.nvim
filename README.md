@@ -82,6 +82,15 @@ require("contrast").setup({
   -- Highlight current line
   cursorline = true,
 
+  -- Granular font weight & style customization
+  styles = {
+    keywords   = { bold = true },    -- keywords & control flow
+    functions  = { bold = false },   -- function declarations & calls
+    types      = { bold = false },   -- types, structs, interfaces
+    attributes = { italic = true },  -- attributes, decorators (#[derive], #[from])
+    comments   = { italic = true },  -- comments
+  },
+
   -- Plugin integrations
   integrations = {
     treesitter = true,

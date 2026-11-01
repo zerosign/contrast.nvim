@@ -16,6 +16,15 @@ M.config = {
 
   -- Cursor line: highlight current line
   cursorline = true,
+
+  -- Granular font weight and style configuration
+  styles = {
+    keywords   = { bold = true },
+    functions  = { bold = false },
+    types      = { bold = false },
+    attributes = { italic = true },
+    comments   = { italic = true },
+  },
 }
 
 local palette = require("contrast.palette")
@@ -25,7 +34,7 @@ local highlights = require("contrast.highlights")
 function M.load()
   local mode = vim.o.background == "light" and "light" or "dark"
   local p = palette.get(mode)
-  local h = highlights.build(p)
+  local h = highlights.build(p, M.config)
 
   -- Clear existing highlights
   vim.cmd("highlight clear")

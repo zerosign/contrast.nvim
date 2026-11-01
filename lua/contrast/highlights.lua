@@ -5,8 +5,18 @@ local M = {}
 
 --- Build highlight groups for the given palette
 ---@param p table palette
+---@param config? table plugin configuration
 ---@return table highlights
-function M.build(p)
+function M.build(p, config)
+  config = config or {}
+  local styles = vim.tbl_deep_extend("force", {
+    keywords   = { bold = true },
+    functions  = { bold = false },
+    types      = { bold = false },
+    attributes = { italic = true },
+    comments   = { italic = true },
+  }, config.styles or {})
+
   local h = {}
 
   -- Helper: create highlight spec
@@ -19,79 +29,85 @@ function M.build(p)
     h[group] = { link = target }
   end
 
+  -- Helper: merge base style with configured font weight / style
+  local function with_style(base, style)
+    return vim.tbl_extend("force", base, style or {})
+  end
+
   -- ==========================================================================
   -- Tree-sitter Highlights
   -- ==========================================================================
-  -- Philosophy: Use brightness/saturation to indicate importance
-  -- - Keywords/declarations: brightest accent (most important to notice)
-  -- - Functions/calls: medium accent
-  -- - Types/constructors: dimmer accent
-  -- - Strings/constants: warm tone (subtle distinction)
-  -- - Comments: muted foreground (visible but not distracting)
+  -- Philosophy: 4-layer semantic model
+  -- - Keywords: single accent hue
+  -- - Functions & Types: peak crisp monochrome
+  -- - Variables: softened monochrome body text
+  -- - Literals: warm sand & parchment
+  -- - Supporting glue: subdued gray
 
-  -- Keywords: Most important - control flow, declarations
-  -- These should catch your eye when scanning
-  hl("@keyword", { fg = p.accent.primary, bold = true })
-  hl("@keyword.function", { fg = p.accent.primary, bold = true })
-  hl("@keyword.return", { fg = p.accent.primary, bold = true })
+  -- Keywords: Structural flow & control
+  hl("@keyword", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.function", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.return", with_style({ fg = p.accent.primary }, styles.keywords))
   hl("@keyword.operator", { fg = p.accent.primary })
-  hl("@keyword.import", { fg = p.accent.primary })
-  hl("@keyword.repeat", { fg = p.accent.primary })
-  hl("@keyword.conditional", { fg = p.accent.primary })
-  hl("@keyword.exception", { fg = p.accent.primary })
-  hl("@keyword.coroutine", { fg = p.accent.primary })
+  hl("@keyword.import", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.repeat", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.conditional", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.exception", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.coroutine", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.modifier", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.type", with_style({ fg = p.accent.primary }, styles.keywords))
 
   -- Control flow keywords (if/else/for/while/match)
-  hl("@keyword.control", { fg = p.accent.primary, bold = true })
-  hl("@keyword.control.conditional", { fg = p.accent.primary, bold = true })
-  hl("@keyword.control.repeat", { fg = p.accent.primary, bold = true })
-  hl("@keyword.control.return", { fg = p.accent.primary, bold = true })
-  hl("@keyword.control.trycatch", { fg = p.accent.primary })
+  hl("@keyword.control", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.control.conditional", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.control.repeat", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.control.return", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.control.trycatch", with_style({ fg = p.accent.primary }, styles.keywords))
 
   -- Storage class / modifiers (pub, static, const, mut, etc.)
-  hl("@keyword.storage", { fg = p.accent.primary })
-  hl("@keyword.storage.modifier", { fg = p.accent.primary })
-  hl("@keyword.storage.type", { fg = p.accent.primary })
+  hl("@keyword.storage", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.storage.modifier", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.storage.type", with_style({ fg = p.accent.primary }, styles.keywords))
 
   -- Definitions: where names are being declared
-  hl("@keyword.definition", { fg = p.accent.primary })
-  hl("@keyword.definition.function", { fg = p.accent.primary })
-  hl("@keyword.definition.method", { fg = p.accent.primary })
-  hl("@keyword.definition.operator", { fg = p.accent.primary })
-  hl("@keyword.definition.type", { fg = p.accent.primary })
-  hl("@keyword.definition.enum", { fg = p.accent.primary })
+  hl("@keyword.definition", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.definition.function", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.definition.method", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.definition.operator", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.definition.type", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.definition.enum", with_style({ fg = p.accent.primary }, styles.keywords))
   hl("@keyword.definition.enum.variant", { fg = p.fg_bright })
-  hl("@keyword.definition.struct", { fg = p.accent.primary })
-  hl("@keyword.definition.interface", { fg = p.accent.primary })
-  hl("@keyword.definition.namespace", { fg = p.accent.primary })
-  hl("@keyword.definition.module", { fg = p.accent.primary })
+  hl("@keyword.definition.struct", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.definition.interface", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.definition.namespace", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.definition.module", with_style({ fg = p.accent.primary }, styles.keywords))
 
-  -- Functions: Medium importance - calls and definitions
-  hl("@function", { fg = p.fg_bright })
-  hl("@function.builtin", { fg = p.fg })
-  hl("@function.call", { fg = p.fg_bright })
-  hl("@function.declaration", { fg = p.fg_bright, bold = true })
-  hl("@function.method", { fg = p.fg_bright })
-  hl("@function.method.call", { fg = p.fg_bright })
+  -- Functions: Peak crisp monochrome
+  hl("@function", with_style({ fg = p.fg_bright }, styles.functions))
+  hl("@function.builtin", with_style({ fg = p.fg_bright }, styles.functions))
+  hl("@function.call", with_style({ fg = p.fg_bright }, styles.functions))
+  hl("@function.declaration", with_style({ fg = p.fg_bright, bold = true }, styles.functions))
+  hl("@function.method", with_style({ fg = p.fg_bright }, styles.functions))
+  hl("@function.method.call", with_style({ fg = p.fg_bright }, styles.functions))
 
-  -- Macros: Slightly different to stand out
-  hl("@function.macro", { fg = p.accent.primary, italic = true })
+  -- Macros
+  hl("@function.macro", with_style({ fg = p.accent.primary, italic = true }, styles.keywords))
 
   -- Methods
-  hl("@method", { fg = p.fg_bright })
-  hl("@method.call", { fg = p.fg_bright })
+  hl("@method", with_style({ fg = p.fg_bright }, styles.functions))
+  hl("@method.call", with_style({ fg = p.fg_bright }, styles.functions))
 
   -- Constructors
-  hl("@constructor", { fg = p.fg_bright })
+  hl("@constructor", with_style({ fg = p.fg_bright }, styles.types))
   hl("@constructor.lua", { fg = p.fg })
 
   -- Types: Peak crisp monochrome for instant legibility
-  hl("@type", { fg = p.fg_bright })
-  hl("@type.builtin", { fg = p.fg_bright })
-  hl("@type.definition", { fg = p.fg_bright, bold = true })
-  hl("@type.qualifier", { fg = p.accent.primary })
-  hl("@type.builtin.vim", { fg = p.fg_bright })
-  hl("@type.builtinvim", { fg = p.fg_bright })
+  hl("@type", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.definition", with_style({ fg = p.fg_bright, bold = true }, styles.types))
+  hl("@type.qualifier", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@type.builtin.vim", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtinvim", with_style({ fg = p.fg_bright }, styles.types))
 
   -- Namespaces and modules: Subdued gray so path prefixes don't drown type names
   hl("@namespace", { fg = p.fg_dim })
@@ -127,10 +143,10 @@ function M.build(p)
   hl("@character.special", { fg = p.accent.warm })
 
   -- Comments: Visible but muted - important for code comprehension
-  hl("@comment", { fg = p.fg_muted, italic = true })
-  hl("@comment.documentation", { fg = p.fg_dim, italic = true })
-  hl("@comment.error", { fg = p.diagnostic.error, italic = true })
-  hl("@comment.warning", { fg = p.diagnostic.warn, italic = true })
+  hl("@comment", with_style({ fg = p.fg_muted }, styles.comments))
+  hl("@comment.documentation", with_style({ fg = p.fg_dim }, styles.comments))
+  hl("@comment.error", with_style({ fg = p.diagnostic.error }, styles.comments))
+  hl("@comment.warning", with_style({ fg = p.diagnostic.warn }, styles.comments))
   hl("@comment.todo", { fg = p.diagnostic.info, italic = true, bold = true })
   hl("@comment.note", { fg = p.diagnostic.hint, italic = true })
   hl("@comment.fix", { fg = p.diagnostic.info, italic = true, bold = true })
@@ -149,9 +165,9 @@ function M.build(p)
   hl("@tag.attribute", { fg = p.fg })
   hl("@tag.delimiter", { fg = p.fg_dim })
 
-  -- Attributes and decorators: Subdued italic metadata
-  hl("@attribute", { fg = p.fg_dim, italic = true })
-  hl("@decorator", { fg = p.fg_dim, italic = true })
+  -- Attributes and decorators: Subdued metadata
+  hl("@attribute", with_style({ fg = p.fg_dim }, styles.attributes))
+  hl("@decorator", with_style({ fg = p.fg_dim }, styles.attributes))
 
   -- Labels
   hl("@label", { fg = p.fg_dim })
@@ -180,59 +196,60 @@ function M.build(p)
   hl("@lsp.type.variable", { fg = p.fg })
   hl("@lsp.type.function", { fg = p.fg_bright })
   hl("@lsp.type.method", { fg = p.fg_bright })
-  hl("@lsp.type.macro", { fg = p.accent.primary, italic = true })
-  hl("@lsp.type.keyword", { fg = p.accent.primary, bold = true })
-  hl("@lsp.type.comment", { fg = p.fg_muted, italic = true })
+  hl("@lsp.type.macro", with_style({ fg = p.accent.primary, italic = true }, styles.keywords))
+  hl("@lsp.type.keyword", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@lsp.type.comment", with_style({ fg = p.fg_muted }, styles.comments))
   hl("@lsp.type.string", { fg = p.accent.warm_dim })
   hl("@lsp.type.number", { fg = p.accent.warm })
   hl("@lsp.type.boolean", { fg = p.accent.warm })
   hl("@lsp.type.operator", { fg = p.fg_dim })
-  hl("@lsp.type.decorator", { fg = p.fg_dim, italic = true })
+  hl("@lsp.type.decorator", with_style({ fg = p.fg_dim }, styles.attributes))
 
   -- ==========================================================================
   -- Language-Specific Tree-sitter Groups
   -- ==========================================================================
 
   -- Rust
-  hl("@type.rust", { fg = p.fg_bright })
-  hl("@lsp.type.class.rust", { fg = p.fg_bright })
-  hl("@lsp.type.enum.rust", { fg = p.fg_bright })
-  hl("@lsp.type.enumMember.rust", { fg = p.fg_bright })
+  hl("@type.rust", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@lsp.type.class.rust", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@lsp.type.enum.rust", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@lsp.type.enumMember.rust", with_style({ fg = p.fg_bright }, styles.types))
 
   -- Go
-  hl("@type.go", { fg = p.fg_bright })
-  hl("@type.builtin.go", { fg = p.fg_bright })
+  hl("@type.go", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.go", with_style({ fg = p.fg_bright }, styles.types))
 
   -- TypeScript/JavaScript
-  hl("@type.typescript", { fg = p.fg_bright })
-  hl("@type.javascript", { fg = p.fg_bright })
-  hl("@lsp.type.interface.typescript", { fg = p.fg_bright })
-  hl("@lsp.type.type.typescript", { fg = p.fg_bright })
+  hl("@type.typescript", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.javascript", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@lsp.type.interface.typescript", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@lsp.type.type.typescript", with_style({ fg = p.fg_bright }, styles.types))
 
   -- Java
-  hl("@type.java", { fg = p.fg_bright })
-  hl("@type.builtin.java", { fg = p.fg_bright })
-  hl("@type.annotation.java", { fg = p.fg_dim, italic = true })
+  hl("@type.java", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.java", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.annotation.java", with_style({ fg = p.fg_dim }, styles.attributes))
 
   -- Scala
-  hl("@type.scala", { fg = p.fg_bright })
+  hl("@type.scala", with_style({ fg = p.fg_bright }, styles.types))
 
   -- C/C++
-  hl("@type.c", { fg = p.fg_bright })
-  hl("@type.cpp", { fg = p.fg_bright })
-  hl("@type.builtin.c", { fg = p.fg_bright })
-  hl("@type.builtin.cpp", { fg = p.fg_bright })
+  hl("@type.c", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.cpp", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.c", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.cpp", with_style({ fg = p.fg_bright }, styles.types))
 
   -- Zig
-  hl("@type.zig", { fg = p.fg_bright })
+  hl("@type.zig", with_style({ fg = p.fg_bright }, styles.types))
 
   -- Prolog
-  hl("@type.prolog", { fg = p.fg_bright })
+  hl("@type.prolog", with_style({ fg = p.fg_bright }, styles.types))
 
-  -- Config files (YAML, JSON, TOML)
-  hl("@property.yaml", { fg = p.fg_dim })
-  hl("@property.json", { fg = p.fg_dim })
-  hl("@property.toml", { fg = p.fg_dim })
+  -- Config files (YAML, JSON, TOML) - Peak crisp monochrome keys for immediate scannability
+  hl("@property.yaml", { fg = p.fg_bright })
+  hl("@field.yaml", { fg = p.fg_bright })
+  hl("@property.json", { fg = p.fg_bright })
+  hl("@property.toml", { fg = p.fg_bright })
   hl("@string.special.path.yaml", { fg = p.accent.warm_dim })
   hl("@string.special.path.json", { fg = p.accent.warm_dim })
 
