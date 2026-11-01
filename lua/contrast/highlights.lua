@@ -206,7 +206,7 @@ function M.build(p, config)
   hl("@lsp.type.decorator", with_style({ fg = p.fg_dim }, styles.attributes))
 
   -- ==========================================================================
-  -- Language-Specific Tree-sitter Groups
+  -- Language-Specific Tree-sitter & Semantic Groups
   -- ==========================================================================
 
   -- Rust
@@ -214,24 +214,140 @@ function M.build(p, config)
   hl("@lsp.type.class.rust", with_style({ fg = p.fg_bright }, styles.types))
   hl("@lsp.type.enum.rust", with_style({ fg = p.fg_bright }, styles.types))
   hl("@lsp.type.enumMember.rust", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@lsp.type.struct.rust", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@lsp.type.type.rust", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@attribute.rust", with_style({ fg = p.fg_dim }, styles.attributes))
+  hl("@lifetime.rust", { fg = p.accent.primary })
+  hl("@attribute.lifetime.rust", { fg = p.accent.primary })
+  hl("@function.macro.rust", with_style({ fg = p.accent.primary, italic = true }, styles.keywords))
 
   -- Go
   hl("@type.go", with_style({ fg = p.fg_bright }, styles.types))
   hl("@type.builtin.go", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.definition.go", with_style({ fg = p.fg_bright, bold = true }, styles.types))
+  hl("@module.go", { fg = p.fg_dim })
+  hl("@package.go", { fg = p.fg_dim })
+  hl("@string.special.go", { fg = p.accent.warm_dim })
 
-  -- TypeScript/JavaScript
+  -- TypeScript / JavaScript / JSX / TSX
   hl("@type.typescript", with_style({ fg = p.fg_bright }, styles.types))
   hl("@type.javascript", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.typescript", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.javascript", with_style({ fg = p.fg_bright }, styles.types))
   hl("@lsp.type.interface.typescript", with_style({ fg = p.fg_bright }, styles.types))
   hl("@lsp.type.type.typescript", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@lsp.type.class.typescript", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@tag.tsx", { fg = p.fg_bright })
+  hl("@tag.jsx", { fg = p.fg_bright })
+  hl("@tag.builtin.tsx", { fg = p.fg_bright })
+  hl("@tag.builtin.jsx", { fg = p.fg_bright })
+  hl("@tag.attribute.tsx", { fg = p.fg })
+  hl("@tag.attribute.jsx", { fg = p.fg })
+  hl("@tag.delimiter.tsx", { fg = p.fg_dim })
+  hl("@tag.delimiter.jsx", { fg = p.fg_dim })
+
+  -- HTML
+  hl("@tag.html", { fg = p.fg_bright })
+  hl("@tag.builtin.html", { fg = p.fg_bright })
+  hl("@tag.attribute.html", { fg = p.fg })
+  hl("@tag.delimiter.html", { fg = p.fg_dim })
+  hl("@string.html", { fg = p.accent.warm_dim })
+  hl("htmlTagName", { fg = p.fg_bright })
+  hl("htmlArg", { fg = p.fg })
+  hl("htmlTag", { fg = p.fg_dim })
+  hl("htmlEndTag", { fg = p.fg_dim })
 
   -- Java
   hl("@type.java", with_style({ fg = p.fg_bright }, styles.types))
   hl("@type.builtin.java", with_style({ fg = p.fg_bright }, styles.types))
   hl("@type.annotation.java", with_style({ fg = p.fg_dim }, styles.attributes))
+  hl("@module.java", { fg = p.fg_dim })
 
   -- Scala
   hl("@type.scala", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.scala", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@module.scala", { fg = p.fg_dim })
+  hl("@interpolation.scala", { fg = p.accent.primary })
+
+  -- Kotlin
+  hl("@type.kotlin", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.kotlin", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.annotation.kotlin", with_style({ fg = p.fg_dim }, styles.attributes))
+  hl("@attribute.kotlin", with_style({ fg = p.fg_dim }, styles.attributes))
+  hl("@annotation.kotlin", with_style({ fg = p.fg_dim }, styles.attributes))
+  hl("@module.kotlin", { fg = p.fg_dim })
+  hl("@punctuation.special.kotlin", { fg = p.accent.primary })
+  hl("@string.special.symbol.kotlin", { fg = p.accent.primary })
+
+  -- OCaml
+  hl("@type.ocaml", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.ocaml", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@module.ocaml", { fg = p.fg_dim })
+  hl("@constructor.ocaml", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@operator.ocaml", { fg = p.fg_dim })
+
+  -- Julia
+  hl("@type.julia", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.julia", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@module.julia", { fg = p.fg_dim })
+  hl("@function.macro.julia", with_style({ fg = p.accent.primary, italic = true }, styles.keywords))
+  hl("@macro.julia", with_style({ fg = p.accent.primary, italic = true }, styles.keywords))
+  hl("@string.special.symbol.julia", { fg = p.accent.warm })
+
+  -- Python
+  hl("@type.python", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@type.builtin.python", with_style({ fg = p.fg_bright }, styles.types))
+  hl("@decorator.python", with_style({ fg = p.fg_dim }, styles.attributes))
+  hl("@attribute.python", with_style({ fg = p.fg_dim }, styles.attributes))
+  hl("@variable.builtin.python", { fg = p.fg_dim })
+  hl("@function.builtin.python", with_style({ fg = p.fg_bright }, styles.functions))
+  hl("@string.special.python", { fg = p.accent.warm_dim })
+  hl("@punctuation.special.python", { fg = p.accent.primary })
+
+  -- Markdown
+  hl("@markup.heading", { fg = p.fg_bright, bold = true })
+  hl("@markup.heading.1", { fg = p.fg_bright, bold = true })
+  hl("@markup.heading.2", { fg = p.fg_bright, bold = true })
+  hl("@markup.heading.3", { fg = p.fg_bright, bold = true })
+  hl("@markup.heading.4", { fg = p.fg_bright, bold = true })
+  hl("@markup.heading.5", { fg = p.fg_bright, bold = true })
+  hl("@markup.heading.6", { fg = p.fg_bright, bold = true })
+  hl("markdownH1", { fg = p.fg_bright, bold = true })
+  hl("markdownH2", { fg = p.fg_bright, bold = true })
+  hl("markdownH3", { fg = p.fg_bright, bold = true })
+  hl("markdownH4", { fg = p.fg_bright, bold = true })
+  hl("markdownH5", { fg = p.fg_bright, bold = true })
+  hl("markdownH6", { fg = p.fg_bright, bold = true })
+  hl("@markup.strong", { bold = true })
+  hl("@markup.italic", { italic = true })
+  hl("@markup.strikethrough", { strikethrough = true })
+  hl("@markup.link", { fg = p.accent.primary, underline = true })
+  hl("@markup.link.url", { fg = p.fg_dim, underline = true })
+  hl("@markup.link.label", { fg = p.accent.primary })
+  hl("@markup.raw", { fg = p.accent.warm })
+  hl("@markup.raw.block", { fg = p.fg })
+  hl("@markup.list", { fg = p.fg_dim })
+  hl("@markup.list.checked", { fg = p.diagnostic.hint })
+  hl("@markup.list.unchecked", { fg = p.fg_dim })
+  hl("@markup.quote", { fg = p.fg_muted, italic = true })
+
+  -- AsciiDoc
+  hl("@markup.heading.asciidoc", { fg = p.fg_bright, bold = true })
+  hl("@markup.link.asciidoc", { fg = p.accent.primary, underline = true })
+  hl("@markup.link.url.asciidoc", { fg = p.fg_dim, underline = true })
+  hl("@markup.raw.asciidoc", { fg = p.accent.warm })
+  hl("@attribute.asciidoc", { fg = p.fg_dim })
+  hl("@markup.list.asciidoc", { fg = p.fg_dim })
+  hl("@markup.strong.asciidoc", { bold = true })
+  hl("@markup.italic.asciidoc", { italic = true })
+
+  -- Fish Shell
+  hl("@function.fish", with_style({ fg = p.fg_bright }, styles.functions))
+  hl("@function.builtin.fish", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@keyword.fish", with_style({ fg = p.accent.primary }, styles.keywords))
+  hl("@variable.fish", { fg = p.fg })
+  hl("@variable.parameter.fish", { fg = p.fg_dim })
+  hl("@operator.fish", { fg = p.fg_dim })
 
   -- C/C++
   hl("@type.c", with_style({ fg = p.fg_bright }, styles.types))

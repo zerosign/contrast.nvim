@@ -26,13 +26,15 @@ Gutter / Guides           █           Subtle background structure
 
 ## Supported Languages
 
-Optimized Tree-sitter highlights for:
+Optimized Tree-sitter & LSP highlights for:
 
 - **Config**: YAML, JSON, TOML
-- **Systems**: Rust, C, C++, Zig
-- **Enterprise**: Java, Scala, TypeScript, JavaScript
-- **Functional**: Go
-- **Scripting**: Lua, Vimscript, Bash
+- **Web & Frontend**: TypeScript, JavaScript, JSX, TSX, HTML
+- **Systems & Modern**: Rust, Go, C, C++, Zig
+- **JVM & Enterprise**: Java, Scala, Kotlin
+- **Functional & Scientific**: OCaml, Julia, Python, Prolog
+- **Documentation & Notes**: Markdown, AsciiDoc
+- **Scripting & Shells**: Fish shell, Bash, Lua, Vimscript
 
 ## Installation
 
