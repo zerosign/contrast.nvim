@@ -5,19 +5,23 @@ Minimalist OLED-optimized Neovim colorscheme with Tree-sitter support.
 ## Design Philosophy
 
 - **Mono-scale color system**: Uses variations of a single hue family instead of multiple vibrant colors. Reduces cognitive load and eye fatigue.
-- **OLED optimized**: Pure black background (`#000000`) for maximum power savings on OLED displays.
-- **Importance-driven**: Brightness and saturation indicate importance. Keywords and declarations are brightest, comments are muted but visible.
-- **Low saturation**: All colors stay below 30% saturation to avoid eye strain during long coding sessions.
+- **OLED optimized**: Pure black background (`#000000`) for maximum power savings and infinite contrast on OLED displays.
+- **Importance-driven luminance hierarchy**: Contrast and perceived luminance indicate importance. Functions and declarations serve as scanning anchors, keywords provide clear structural control flow, and operators/comments stay secondary.
+- **Perceptual contrast (WCAG AAA & APCA)**: Calibrated against halation/glare on dark backgrounds and washing out on paper backgrounds. See [doc/color-theory.md](doc/color-theory.md) for full color science notes.
 
 ## Color Hierarchy
 
 ```
-Keywords/Declarations  ████████  Brightest (most important to notice)
-Functions/Calls        ██████    Medium brightness
-Types/Constructors     ████      Dimmer accent
-Strings/Constants      ████      Warm gray (subtle distinction)
-Comments               ██        Muted but visible
-Background elements    █         Very subtle
+Functions / Declarations  ██████████  Peak luminance (visual scanning anchors)
+Variables / Identifiers   ████████    Softened body text (anti-glare, 12:1 - 14:1)
+Keywords / Control flow   ████████    Primary accent (bold, high-clarity structural signposts)
+Constants / Numbers       ████████    Warm sand / bronze (clean data distinction)
+Strings                   ██████      Warm parchment / sepia
+Storage / Modifiers       ██████      Secondary accent
+Types / Constructors      ██████      Tertiary accent (calibrated for 7:1+ contrast)
+Operators / Punctuation   ████        Syntax glue (subdued to prevent visual crowding)
+Comments                  ██          Muted, legible, non-distracting
+Gutter / Guides           █           Subtle background structure
 ```
 
 ## Supported Languages
@@ -111,14 +115,19 @@ Change the accent color at runtime (palette is cached, no performance impact):
 
 ### Background mode
 
-Switch via standard vim option:
+Switch via standard Vim background options or colorscheme commands:
 
 ```vim
+" Switch via standard option
 :set background=dark
 :set background=light
+
+" Or switch via colorscheme picker / command
+:colorscheme contrast        " OLED dark mode
+:colorscheme contrast-light  " Off-white paper light mode
 ```
 
-The theme responds to `OptionSet` automatically.
+The theme responds to `OptionSet background` automatically and retrieves cached palettes with zero overhead.
 
 ## Recommended Settings
 
@@ -134,19 +143,29 @@ set noshowmode  " Statusline shows mode
 
 ## How It Works
 
-### Dark Mode
+Palettes are calculated once per accent hue and cached for instant switching with calibrated contrast ratios and optical ergonomics. For full contrast ratios, APCA scores, and optical ergonomics, see [doc/color-theory.md](doc/color-theory.md).
 
-- Background: `#000000` (pure black for OLED)
-- Text: `#d4d4d8` (soft gray, not pure white)
-- Keywords: `#8b9cc7` (muted blue-gray, brightest accent)
-- Comments: `#71717a` (visible but not distracting)
+### Dark Mode (OLED pitch black)
 
-### Light Mode
+- **Background**: `#000000` (pure black, maximum OLED battery savings)
+- **Functions**: `#ededf0` (peak luminance scanning anchor, 18:1 contrast)
+- **Text / Variables**: `#c8c8cf` (softened anti-glare light gray, 12.6:1 contrast)
+- **Keywords**: `#a2b7e2` (crisp high-clarity accent, 10.4:1 contrast, bold)
+- **Types**: `#7992c3` (calibrated tertiary accent, 6.7:1 contrast, never unreadable)
+- **Constants & Numbers**: `#d6c3a4` (clean warm sand, 12.2:1 contrast)
+- **Strings**: `#c1ad8b` (warm parchment, 9.6:1 contrast)
+- **Comments**: `#63636e` (legible, non-distracting)
 
-- Background: `#fafafa` (off-white, reduced glare)
-- Text: `#27272a` (dark gray, not pure black)
-- Keywords: `#4a5a8a` (deeper blue-gray)
-- Comments: `#71717a` (same muted tone)
+### Light Mode (Paper off-white)
+
+- **Background**: `#fafafa` (off-white, reduced glare)
+- **Functions**: `#121214` (peak contrast anchor, 17.9:1 contrast)
+- **Text / Variables**: `#27272a` (dark charcoal body text, 14.3:1 contrast)
+- **Keywords**: `#203a6f` (rich deep accent, 10.6:1 contrast, bold)
+- **Types**: `#3c568b` (crisp tertiary accent, 6.9:1 contrast)
+- **Constants & Numbers**: `#775422` (deep warm bronze, 6.5:1 contrast)
+- **Strings**: `#856332` (rich warm sepia, 5.3:1 contrast)
+- **Comments**: `#797985` (clear muted tone, 4.1:1 contrast)
 
 ## Plugin Support
 

@@ -165,6 +165,31 @@ function M.build(p)
   hl("@error", { fg = p.diagnostic.error })
 
   -- ==========================================================================
+  -- LSP Semantic Tokens (Neovim 0.9+)
+  -- ==========================================================================
+  hl("@lsp.type.class", { fg = p.accent.tertiary })
+  hl("@lsp.type.enum", { fg = p.accent.tertiary })
+  hl("@lsp.type.enumMember", { fg = p.accent.warm })
+  hl("@lsp.type.interface", { fg = p.accent.tertiary })
+  hl("@lsp.type.struct", { fg = p.accent.tertiary })
+  hl("@lsp.type.type", { fg = p.accent.tertiary })
+  hl("@lsp.type.typeParameter", { fg = p.accent.tertiary })
+  hl("@lsp.type.namespace", { fg = p.accent.tertiary })
+  hl("@lsp.type.parameter", { fg = p.fg_dim })
+  hl("@lsp.type.property", { fg = p.fg })
+  hl("@lsp.type.variable", { fg = p.fg })
+  hl("@lsp.type.function", { fg = p.fg_bright })
+  hl("@lsp.type.method", { fg = p.fg_bright })
+  hl("@lsp.type.macro", { fg = p.accent.secondary, italic = true })
+  hl("@lsp.type.keyword", { fg = p.accent.primary, bold = true })
+  hl("@lsp.type.comment", { fg = p.fg_muted, italic = true })
+  hl("@lsp.type.string", { fg = p.accent.warm_dim })
+  hl("@lsp.type.number", { fg = p.accent.warm })
+  hl("@lsp.type.boolean", { fg = p.accent.warm })
+  hl("@lsp.type.operator", { fg = p.fg_dim })
+  hl("@lsp.type.decorator", { fg = p.accent.secondary, italic = true })
+
+  -- ==========================================================================
   -- Language-Specific Tree-sitter Groups
   -- ==========================================================================
 
@@ -282,7 +307,7 @@ function M.build(p)
   hl("VisualNOS", { bg = p.visual })
 
   -- Matching
-  hl("MatchParen", { bg = p.match_paren })
+  hl("MatchParen", { bg = p.match_paren, bold = true })
 
   -- Non-text
   hl("NonText", { fg = p.fg_faint })
@@ -311,6 +336,14 @@ function M.build(p)
   hl("DiagnosticVirtualTextWarn", { fg = p.diagnostic.warn, bg = p.bg_dim })
   hl("DiagnosticVirtualTextInfo", { fg = p.diagnostic.info, bg = p.bg_dim })
   hl("DiagnosticVirtualTextHint", { fg = p.diagnostic.hint, bg = p.bg_dim })
+
+  -- LSP Inlay Hints (Neovim 0.10+)
+  hl("LspInlayHint", { fg = p.fg_muted, bg = p.bg_subtle, italic = true })
+
+  -- LSP Document Highlights
+  hl("LspReferenceText", { bg = p.bg_highlight })
+  hl("LspReferenceRead", { bg = p.bg_highlight })
+  hl("LspReferenceWrite", { bg = p.bg_highlight })
 
   -- Floating windows
   hl("FloatBorder", { fg = p.border, bg = p.bg_subtle })

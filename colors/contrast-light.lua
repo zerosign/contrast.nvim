@@ -1,6 +1,6 @@
 -- colors/contrast-light.lua
 -- Entry point for :colorscheme contrast-light
 
-local contrast = require("contrast")
-contrast.setup({ mode = "light" })
-contrast.load()
+vim.o.background = "light"
+require("contrast").load()
+vim.g.colors_name = "contrast-light"
