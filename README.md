@@ -7,7 +7,7 @@ Minimalist OLED-optimized Neovim colorscheme with Tree-sitter support.
 - **Mono-scale color system**: Uses variations of a single hue family instead of multiple vibrant colors. Reduces cognitive load and eye fatigue.
 - **OLED optimized**: Pure black background (`#000000`) for maximum power savings and infinite contrast on OLED displays.
 - **Importance-driven luminance hierarchy**: Contrast and perceived luminance indicate importance. Functions and declarations serve as scanning anchors, keywords provide clear structural control flow, and operators/comments stay secondary.
-- **Perceptual contrast (WCAG AAA & APCA)**: Calibrated against halation/glare on dark backgrounds and washing out on paper backgrounds. See [doc/color-theory.md](doc/color-theory.md) for full color science notes.
+- **Perceptual contrast (WCAG AAA & APCA)**: Calibrated against halation/glare on dark backgrounds and washing out on paper backgrounds. See [docs/color-theory.md](docs/color-theory.md) for full color science notes.
 
 ## Color Hierarchy
 
@@ -143,7 +143,7 @@ set noshowmode  " Statusline shows mode
 
 ## How It Works
 
-Palettes are calculated once per accent hue and cached for instant switching with calibrated contrast ratios and optical ergonomics. For full contrast ratios, APCA scores, and optical ergonomics, see [doc/color-theory.md](doc/color-theory.md).
+Palettes are calculated once per accent hue and cached for instant switching with calibrated contrast ratios and optical ergonomics. For full contrast ratios, APCA scores, and optical ergonomics, see [docs/color-theory.md](docs/color-theory.md).
 
 ### Dark Mode (OLED pitch black)
 
