@@ -122,6 +122,35 @@ local function gen_ui(hue, dark)
   end
 end
 
+--- Generate diff colors for git / neogit / diffview
+---@param dark boolean
+---@return table diff
+local function gen_diff(dark)
+  if dark then
+    return {
+      add_bg     = color.hsl_to_hex(150, 30, 11),  -- subtle dark green tint
+      add_fg     = color.hsl_to_hex(150, 45, 75),  -- soft mint text
+      add_inline = color.hsl_to_hex(150, 40, 20),  -- word-diff add
+      del_bg     = color.hsl_to_hex(0,   30, 11),  -- subtle dark red tint
+      del_fg     = color.hsl_to_hex(0,   45, 75),  -- soft coral text
+      del_inline = color.hsl_to_hex(0,   40, 20),  -- word-diff delete
+      change_bg  = "#161622",
+      change_fg  = "#a2b7e2",
+    }
+  else
+    return {
+      add_bg     = color.hsl_to_hex(150, 40, 92),
+      add_fg     = color.hsl_to_hex(150, 60, 25),
+      add_inline = color.hsl_to_hex(150, 50, 84),
+      del_bg     = color.hsl_to_hex(0,   40, 93),
+      del_fg     = color.hsl_to_hex(0,   60, 32),
+      del_inline = color.hsl_to_hex(0,   50, 85),
+      change_bg  = "#edf0f8",
+      change_fg  = "#203a6f",
+    }
+  end
+end
+
 --- Build full palette for a mode at a given hue (cached)
 ---@param mode "dark" | "light"
 ---@param hue number 0-360
@@ -132,6 +161,7 @@ local function build(mode, hue)
   local accent = gen_accent(hue, dark)
   local diag = gen_diagnostic(hue, dark)
   local ui = gen_ui(hue, dark)
+  local diff = gen_diff(dark)
 
   -- Merge into single palette table
   local p = {}
@@ -140,6 +170,7 @@ local function build(mode, hue)
   p.diagnostic = diag
   p.visual = ui.visual
   p.match_paren = ui.match_paren
+  p.diff = diff
   return p
 end
 

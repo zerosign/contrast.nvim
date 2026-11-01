@@ -17,7 +17,48 @@ A true **mono-scale + accent** system operates on strict visual hierarchy:
 
 ---
 
-## 2. Pitfalls We Fixed: Why Themes Cause Squinting
+## 2. The 4-Layer Semantic Model (Why 1 Accent is Enough)
+
+In typed languages (such as Rust, TypeScript, Go, Java), attempting to use multiple accent tiers (e.g., `primary` for keywords, `secondary` for attributes, `tertiary` for types) creates a **"Blue Soup"**:
+- Keywords are blue
+- Attributes (`#[derive]`, `#[from]`) are blue
+- Types (`Result`, `Vec`, `String`, `StorageError`) are blue
+- Modules (`thiserror`, `redb`, `std::io`) are blue
+- Enum variants (`Database`, `Transaction`) are blue
+
+When 70%–80% of the buffer is tinted with the same hue, it ceases to be an accent. The eye cannot distinguish between a keyword, a type, and an attribute.
+
+### The Correct Model:
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 1. Structural Anchors (10-15%)  → THE SINGLE ACCENT HUE     │
+│    Keywords (fn, pub, enum, let, if, return, use)           │
+├─────────────────────────────────────────────────────────────┤
+│ 2. Core Substance (50-60%)      → CRISP MONOCHROME          │
+│    Types & Structs (StorageError, Result, Vec)   [Peak White]│
+│    Functions & Calls (list_names, split_once)    [Peak White]│
+│    Variables & Fields (rtx, names, tmpls)        [Soft Gray] │
+├─────────────────────────────────────────────────────────────┤
+│ 3. Data Literals (15-20%)       → WARM TONES                │
+│    Numbers, Booleans (0, 42, true)               [Sand]      │
+│    Strings ("Database error", '/')               [Parchment] │
+├─────────────────────────────────────────────────────────────┤
+│ 4. Supporting Glue (15-20%)     → SUBDUED MONOCHROME        │
+│    Operators & Delimiters (::, ->, ?, =, +)      [Mid Gray]  │
+│    Attributes & Modules (#[derive], redb::)      [Muted Italic│
+│    Comments & Inlay Hints (: ReadTransaction)    [Ghost Gray]│
+└─────────────────────────────────────────────────────────────┘
+```
+
+Now, every visual channel carries unambiguous meaning:
+- **Accent (Blue/Teal):** Tells you *how the program flows* (control syntax).
+- **Crisp White (Peak):** Identifies *what data structures and functions exist*.
+- **Warm Sand:** Distinguishes *runtime data literals*.
+- **Muted Gray:** Keeps compiler metadata (`#[derive]`) and path prefixes (`std::io::`) from competing with the actual types.
+
+---
+
+## 3. Pitfalls We Fixed: Why Themes Cause Squinting
 
 ### A. The Inverted Luminance Hierarchy
 Human eye ergonomics prioritize luminance over hue: the eye focuses first on whatever has the highest luminance contrast against the background.
@@ -29,7 +70,9 @@ In the initial implementation:
 
 Because the structural anchors (keywords and types) were substantially darker than variables, reading dense code caused eye fatigue: the eye had to constantly strain and squint to resolve dimmer keywords and types amidst glowing variables.
 
-**The Fix:** Keywords and types are calibrated to high-clarity lightness levels (`76%` and `62%` respectively in dark mode, `28%` and `39%` in light mode), guaranteeing clean readability and proper visual hierarchy.
+**The Fix:** 
+- Types and constructors are mapped to peak crisp monochrome (`#ededf0`), making them immediately sharp and legible.
+- Keywords are calibrated to high-clarity lightness (`76%` in dark mode, `28%` in light mode), guaranteeing clean readability and proper visual hierarchy.
 
 ---
 
@@ -58,7 +101,27 @@ At only 10%–12% saturation, warm hues (orange/yellow/brown) fall into an optic
 
 ---
 
-## 3. Contrast Ratios & Luminance Tables
+### D. Inlay Hints & Floating Window Opacity
+- **Ghost Inlay Hints:** Background boxes on `LspInlayHint` (`bg = p.bg_subtle`) create dark rectangular smudges in typed code. Inlay hints now render with no background box (`{ fg = p.fg_faint, italic = true }`), acting as gentle ghost text.
+- **Floating Window Solid Opacity:** In floating views (such as Neogit status/diffs), `NeogitNormal` and `NeogitNormalFloat` enforce solid background colors (`#000000` / `#fafafa`) so underlying buffer text never leaks through.
+
+---
+
+## 4. Git & Diff Ergonomics (Neogit / Diffview)
+
+By default, git tools often fall back to aggressive primary colors:
+- Obnoxious gray hunk headers (`@@ -765,7 +765,7 @@`) that cut across the screen like slabs.
+- Blinding fluorescent green and red lines that fatigue the eyes during long code reviews.
+
+`contrast.nvim` treats diffs with the same restraint:
+1. **Calm Hunk Headers:** `NeogitHunkHeader` uses subdued background dividers (`bg = p.bg_subtle`) that demarcate changes without dominating the screen.
+2. **Restrained Additions (`+`):** Subtle dark forest tint background (`#14241c`) with soft mint green text (`#a3dcbf`). Word-level changes highlight cleanly with `#1f4733`.
+3. **Restrained Deletions (`-`):** Subtle dark wine tint background (`#241414`) with soft coral red text (`#dca3a3`). Word-level changes highlight cleanly with `#471f1f`.
+4. **Light Mode Symmetry:** Additions use soft mint parchment (`#e2f3eb`) with forest green text (`#196640`); deletions use soft rose (`#f4e6e6`) with deep crimson text (`#832121`).
+
+---
+
+## 5. Contrast Ratios & Luminance Tables
 
 Both variants are calibrated for WCAG AAA compliance and APCA perceptual comfort.
 
@@ -66,16 +129,17 @@ Both variants are calibrated for WCAG AAA compliance and APCA perceptual comfort
 
 | Token | Group / Role | Hex | Luminance | Contrast vs `#000000` |
 | :--- | :--- | :--- | :--- | :--- |
-| **Peak Elements** | `@function`, Declarations | `#ededf0` | `0.85` | **18.0 : 1** (WCAG AAA) |
+| **Peak Elements** | `@function`, `@type`, Constructors | `#ededf0` | `0.85` | **18.0 : 1** (WCAG AAA) |
 | **Variables / Identifiers** | `@variable`, `@property` | `#c8c8cf` | `0.58` | **12.6 : 1** (WCAG AAA, anti-glare) |
 | **Keywords** | `@keyword`, Control flow | `#a2b7e2` | `0.47` | **10.4 : 1** (WCAG AAA) |
 | **Constants / Numbers** | `@constant`, `@number` | `#d6c3a4` | `0.56` | **12.2 : 1** (WCAG AAA) |
 | **Strings** | `@string`, `@character` | `#c1ad8b` | `0.43` | **9.6 : 1** (WCAG AAA) |
-| **Storage / Modifiers** | `@keyword.storage` | `#8ba2d0` | `0.36` | **8.2 : 1** (WCAG AAA) |
-| **Types / Constructors** | `@type`, `@constructor` | `#7992c3` | `0.29` | **6.7 : 1** (WCAG AA+) |
+| **Diff Additions** | `DiffAdd`, `NeogitDiffAdd` | `#a3dcbf` on `#14241c` | `0.65` | **10.2 : 1** (Gentle mint) |
+| **Diff Deletions** | `DiffDelete`, `NeogitDiffDelete` | `#dca3a3` on `#241414` | `0.45` | **7.8 : 1** (Gentle coral) |
 | **Operators / Punctuation** | `@operator`, `@punctuation` | `#8e8e98` | `0.27` | **6.5 : 1** (Secondary structure) |
+| **Attributes / Modules** | `@attribute`, `@module` | `#8e8e98` | `0.27` | **6.5 : 1** (Subdued italic) |
 | **Comments** | `@comment` | `#63636e` | `0.13` | **3.5 : 1** (Legible, non-distracting) |
-| **Gutter / Structure** | `LineNr`, `IndentBlankline` | `#3f3f48` | `0.05` | **2.0 : 1** (Quiet background) |
+| **Inlay Hints / Gutter** | `LspInlayHint`, `LineNr` | `#3f3f48` | `0.05` | **2.0 : 1** (Quiet ghost text) |
 
 ---
 
@@ -83,20 +147,21 @@ Both variants are calibrated for WCAG AAA compliance and APCA perceptual comfort
 
 | Token | Group / Role | Hex | Luminance | Contrast vs `#fafafa` |
 | :--- | :--- | :--- | :--- | :--- |
-| **Peak Elements** | `@function`, Declarations | `#121214` | `0.01` | **17.9 : 1** (WCAG AAA) |
+| **Peak Elements** | `@function`, `@type`, Constructors | `#121214` | `0.01` | **17.9 : 1** (WCAG AAA) |
 | **Variables / Identifiers** | `@variable`, `@property` | `#27272a` | `0.02` | **14.3 : 1** (WCAG AAA) |
 | **Keywords** | `@keyword`, Control flow | `#203a6f` | `0.04` | **10.6 : 1** (WCAG AAA) |
 | **Constants / Numbers** | `@constant`, `@number` | `#775422` | `0.10` | **6.5 : 1** (WCAG AA+) |
 | **Strings** | `@string`, `@character` | `#856332` | `0.14` | **5.3 : 1** (WCAG AA) |
-| **Storage / Modifiers** | `@keyword.storage` | `#304a7e` | `0.07` | **8.4 : 1** (WCAG AAA) |
-| **Types / Constructors** | `@type`, `@constructor` | `#3c568b` | `0.10` | **6.9 : 1** (WCAG AA+) |
+| **Diff Additions** | `DiffAdd`, `NeogitDiffAdd` | `#196640` on `#e2f3eb` | `0.11` | **7.5 : 1** (Rich forest green) |
+| **Diff Deletions** | `DiffDelete`, `NeogitDiffDelete` | `#832121` on `#f4e6e6` | `0.09` | **8.2 : 1** (Rich crimson) |
 | **Operators / Punctuation** | `@operator`, `@punctuation` | `#5c5c66` | `0.11` | **6.3 : 1** (Secondary structure) |
+| **Attributes / Modules** | `@attribute`, `@module` | `#5c5c66` | `0.11` | **6.3 : 1** (Subdued italic) |
 | **Comments** | `@comment` | `#797985` | `0.19` | **4.1 : 1** (Legible, non-distracting) |
-| **Gutter / Structure** | `LineNr`, `IndentBlankline` | `#a6a6b2` | `0.39` | **2.3 : 1** (Quiet background) |
+| **Inlay Hints / Gutter** | `LspInlayHint`, `LineNr` | `#a6a6b2` | `0.39` | **2.3 : 1** (Quiet ghost text) |
 
 ---
 
-## 4. Architecture & Cache Strategy
+## 6. Architecture & Cache Strategy
 
 `contrast.nvim` generates palette shades dynamically from an accent hue degree `[0, 360]`:
 

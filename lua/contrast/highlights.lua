@@ -49,9 +49,9 @@ function M.build(p)
   hl("@keyword.control.trycatch", { fg = p.accent.primary })
 
   -- Storage class / modifiers (pub, static, const, mut, etc.)
-  hl("@keyword.storage", { fg = p.accent.secondary })
-  hl("@keyword.storage.modifier", { fg = p.accent.secondary })
-  hl("@keyword.storage.type", { fg = p.accent.secondary })
+  hl("@keyword.storage", { fg = p.accent.primary })
+  hl("@keyword.storage.modifier", { fg = p.accent.primary })
+  hl("@keyword.storage.type", { fg = p.accent.primary })
 
   -- Definitions: where names are being declared
   hl("@keyword.definition", { fg = p.accent.primary })
@@ -60,7 +60,7 @@ function M.build(p)
   hl("@keyword.definition.operator", { fg = p.accent.primary })
   hl("@keyword.definition.type", { fg = p.accent.primary })
   hl("@keyword.definition.enum", { fg = p.accent.primary })
-  hl("@keyword.definition.enum.variant", { fg = p.accent.tertiary })
+  hl("@keyword.definition.enum.variant", { fg = p.fg_bright })
   hl("@keyword.definition.struct", { fg = p.accent.primary })
   hl("@keyword.definition.interface", { fg = p.accent.primary })
   hl("@keyword.definition.namespace", { fg = p.accent.primary })
@@ -75,28 +75,28 @@ function M.build(p)
   hl("@function.method.call", { fg = p.fg_bright })
 
   -- Macros: Slightly different to stand out
-  hl("@function.macro", { fg = p.accent.secondary, italic = true })
+  hl("@function.macro", { fg = p.accent.primary, italic = true })
 
   -- Methods
   hl("@method", { fg = p.fg_bright })
   hl("@method.call", { fg = p.fg_bright })
 
   -- Constructors
-  hl("@constructor", { fg = p.accent.tertiary })
+  hl("@constructor", { fg = p.fg_bright })
   hl("@constructor.lua", { fg = p.fg })
 
-  -- Types: Third tier - important but not as critical as keywords
-  hl("@type", { fg = p.accent.tertiary })
-  hl("@type.builtin", { fg = p.accent.tertiary })
-  hl("@type.definition", { fg = p.accent.tertiary, bold = true })
-  hl("@type.qualifier", { fg = p.accent.secondary })
-  hl("@type.builtin.vim", { fg = p.accent.tertiary })
-  hl("@type.builtinvim", { fg = p.accent.tertiary })
+  -- Types: Peak crisp monochrome for instant legibility
+  hl("@type", { fg = p.fg_bright })
+  hl("@type.builtin", { fg = p.fg_bright })
+  hl("@type.definition", { fg = p.fg_bright, bold = true })
+  hl("@type.qualifier", { fg = p.accent.primary })
+  hl("@type.builtin.vim", { fg = p.fg_bright })
+  hl("@type.builtinvim", { fg = p.fg_bright })
 
-  -- Namespaces and modules
-  hl("@namespace", { fg = p.accent.tertiary })
-  hl("@module", { fg = p.accent.tertiary })
-  hl("@module.builtin", { fg = p.accent.tertiary })
+  -- Namespaces and modules: Subdued gray so path prefixes don't drown type names
+  hl("@namespace", { fg = p.fg_dim })
+  hl("@module", { fg = p.fg_dim })
+  hl("@module.builtin", { fg = p.fg_dim })
 
   -- Parameters and variables
   hl("@variable", { fg = p.fg })
@@ -145,16 +145,16 @@ function M.build(p)
   hl("@operator", { fg = p.fg_dim })
 
   -- Tags (HTML/XML)
-  hl("@tag", { fg = p.accent.tertiary })
+  hl("@tag", { fg = p.fg_bright })
   hl("@tag.attribute", { fg = p.fg })
   hl("@tag.delimiter", { fg = p.fg_dim })
 
-  -- Attributes and decorators
-  hl("@attribute", { fg = p.accent.secondary, italic = true })
-  hl("@decorator", { fg = p.accent.secondary, italic = true })
+  -- Attributes and decorators: Subdued italic metadata
+  hl("@attribute", { fg = p.fg_dim, italic = true })
+  hl("@decorator", { fg = p.fg_dim, italic = true })
 
   -- Labels
-  hl("@label", { fg = p.accent.tertiary })
+  hl("@label", { fg = p.fg_dim })
 
   -- Diff
   hl("@diff.plus", { fg = p.diagnostic.hint })
@@ -167,67 +167,67 @@ function M.build(p)
   -- ==========================================================================
   -- LSP Semantic Tokens (Neovim 0.9+)
   -- ==========================================================================
-  hl("@lsp.type.class", { fg = p.accent.tertiary })
-  hl("@lsp.type.enum", { fg = p.accent.tertiary })
-  hl("@lsp.type.enumMember", { fg = p.accent.warm })
-  hl("@lsp.type.interface", { fg = p.accent.tertiary })
-  hl("@lsp.type.struct", { fg = p.accent.tertiary })
-  hl("@lsp.type.type", { fg = p.accent.tertiary })
-  hl("@lsp.type.typeParameter", { fg = p.accent.tertiary })
-  hl("@lsp.type.namespace", { fg = p.accent.tertiary })
+  hl("@lsp.type.class", { fg = p.fg_bright })
+  hl("@lsp.type.enum", { fg = p.fg_bright })
+  hl("@lsp.type.enumMember", { fg = p.fg_bright })
+  hl("@lsp.type.interface", { fg = p.fg_bright })
+  hl("@lsp.type.struct", { fg = p.fg_bright })
+  hl("@lsp.type.type", { fg = p.fg_bright })
+  hl("@lsp.type.typeParameter", { fg = p.fg_bright })
+  hl("@lsp.type.namespace", { fg = p.fg_dim })
   hl("@lsp.type.parameter", { fg = p.fg_dim })
   hl("@lsp.type.property", { fg = p.fg })
   hl("@lsp.type.variable", { fg = p.fg })
   hl("@lsp.type.function", { fg = p.fg_bright })
   hl("@lsp.type.method", { fg = p.fg_bright })
-  hl("@lsp.type.macro", { fg = p.accent.secondary, italic = true })
+  hl("@lsp.type.macro", { fg = p.accent.primary, italic = true })
   hl("@lsp.type.keyword", { fg = p.accent.primary, bold = true })
   hl("@lsp.type.comment", { fg = p.fg_muted, italic = true })
   hl("@lsp.type.string", { fg = p.accent.warm_dim })
   hl("@lsp.type.number", { fg = p.accent.warm })
   hl("@lsp.type.boolean", { fg = p.accent.warm })
   hl("@lsp.type.operator", { fg = p.fg_dim })
-  hl("@lsp.type.decorator", { fg = p.accent.secondary, italic = true })
+  hl("@lsp.type.decorator", { fg = p.fg_dim, italic = true })
 
   -- ==========================================================================
   -- Language-Specific Tree-sitter Groups
   -- ==========================================================================
 
   -- Rust
-  hl("@type.rust", { fg = p.accent.tertiary })
-  hl("@lsp.type.class.rust", { fg = p.accent.tertiary })
-  hl("@lsp.type.enum.rust", { fg = p.accent.tertiary })
-  hl("@lsp.type.enumMember.rust", { fg = p.accent.tertiary })
+  hl("@type.rust", { fg = p.fg_bright })
+  hl("@lsp.type.class.rust", { fg = p.fg_bright })
+  hl("@lsp.type.enum.rust", { fg = p.fg_bright })
+  hl("@lsp.type.enumMember.rust", { fg = p.fg_bright })
 
   -- Go
-  hl("@type.go", { fg = p.accent.tertiary })
-  hl("@type.builtin.go", { fg = p.accent.tertiary })
+  hl("@type.go", { fg = p.fg_bright })
+  hl("@type.builtin.go", { fg = p.fg_bright })
 
   -- TypeScript/JavaScript
-  hl("@type.typescript", { fg = p.accent.tertiary })
-  hl("@type.javascript", { fg = p.accent.tertiary })
-  hl("@lsp.type.interface.typescript", { fg = p.accent.tertiary })
-  hl("@lsp.type.type.typescript", { fg = p.accent.tertiary })
+  hl("@type.typescript", { fg = p.fg_bright })
+  hl("@type.javascript", { fg = p.fg_bright })
+  hl("@lsp.type.interface.typescript", { fg = p.fg_bright })
+  hl("@lsp.type.type.typescript", { fg = p.fg_bright })
 
   -- Java
-  hl("@type.java", { fg = p.accent.tertiary })
-  hl("@type.builtin.java", { fg = p.accent.tertiary })
-  hl("@type.annotation.java", { fg = p.accent.secondary, italic = true })
+  hl("@type.java", { fg = p.fg_bright })
+  hl("@type.builtin.java", { fg = p.fg_bright })
+  hl("@type.annotation.java", { fg = p.fg_dim, italic = true })
 
   -- Scala
-  hl("@type.scala", { fg = p.accent.tertiary })
+  hl("@type.scala", { fg = p.fg_bright })
 
   -- C/C++
-  hl("@type.c", { fg = p.accent.tertiary })
-  hl("@type.cpp", { fg = p.accent.tertiary })
-  hl("@type.builtin.c", { fg = p.accent.tertiary })
-  hl("@type.builtin.cpp", { fg = p.accent.tertiary })
+  hl("@type.c", { fg = p.fg_bright })
+  hl("@type.cpp", { fg = p.fg_bright })
+  hl("@type.builtin.c", { fg = p.fg_bright })
+  hl("@type.builtin.cpp", { fg = p.fg_bright })
 
   -- Zig
-  hl("@type.zig", { fg = p.accent.tertiary })
+  hl("@type.zig", { fg = p.fg_bright })
 
   -- Prolog
-  hl("@type.prolog", { fg = p.accent.tertiary })
+  hl("@type.prolog", { fg = p.fg_bright })
 
   -- Config files (YAML, JSON, TOML)
   hl("@property.yaml", { fg = p.fg_dim })
@@ -237,13 +237,13 @@ function M.build(p)
   hl("@string.special.path.json", { fg = p.accent.warm_dim })
 
   -- Lua
-  hl("@variable.builtin.lua", { fg = p.accent.tertiary })
+  hl("@variable.builtin.lua", { fg = p.fg_bright })
   hl("@constructor.lua", { fg = p.fg })
   hl("@property.lua", { fg = p.fg })
 
   -- Vim
   hl("@function.builtin.vim", { fg = p.fg })
-  hl("@variable.builtin.vim", { fg = p.accent.tertiary })
+  hl("@variable.builtin.vim", { fg = p.fg_bright })
   hl("@keyword.vim", { fg = p.accent.primary })
 
   -- ==========================================================================
@@ -337,8 +337,8 @@ function M.build(p)
   hl("DiagnosticVirtualTextInfo", { fg = p.diagnostic.info, bg = p.bg_dim })
   hl("DiagnosticVirtualTextHint", { fg = p.diagnostic.hint, bg = p.bg_dim })
 
-  -- LSP Inlay Hints (Neovim 0.10+)
-  hl("LspInlayHint", { fg = p.fg_muted, bg = p.bg_subtle, italic = true })
+  -- LSP Inlay Hints (Neovim 0.10+): subtle ghost text, no background box
+  hl("LspInlayHint", { fg = p.fg_faint, italic = true })
 
   -- LSP Document Highlights
   hl("LspReferenceText", { bg = p.bg_highlight })
@@ -430,11 +430,77 @@ function M.build(p)
   hl("GitSignsTopDelete", { fg = p.diagnostic.error })
   hl("GitSignsChangedelete", { fg = p.diagnostic.warn })
 
-  -- Diffview
-  hl("DiffAdd", { bg = p.visual })
-  hl("DiffChange", { bg = p.visual })
-  hl("DiffDelete", { fg = p.diagnostic.error })
-  hl("DiffText", { bg = p.visual })
+  -- Diff (Standard Vim & Diffview)
+  hl("DiffAdd", { fg = p.diff.add_fg, bg = p.diff.add_bg })
+  hl("DiffChange", { bg = p.diff.change_bg })
+  hl("DiffDelete", { fg = p.diff.del_fg, bg = p.diff.del_bg })
+  hl("DiffText", { fg = p.diff.change_fg, bg = p.diff.change_bg, bold = true })
+  hl("diffAdded", { fg = p.diff.add_fg, bg = p.diff.add_bg })
+  hl("diffRemoved", { fg = p.diff.del_fg, bg = p.diff.del_bg })
+  hl("diffChanged", { fg = p.diff.change_fg, bg = p.diff.change_bg })
+  hl("diffLine", { fg = p.fg_dim, bg = p.bg_subtle, bold = true })
+  hl("diffSubname", { fg = p.fg_muted })
+
+  -- Neogit
+  hl("NeogitNormal", { fg = p.fg, bg = p.bg })
+  hl("NeogitNormalFloat", { fg = p.fg, bg = p.bg })
+  hl("NeogitFloat", { fg = p.fg, bg = p.bg })
+  hl("NeogitFloatBorder", { fg = p.border, bg = p.bg })
+  hl("NeogitFloatHeader", { fg = p.fg_bright, bg = p.bg_subtle, bold = true })
+  hl("NeogitFloatHeaderHighlight", { fg = p.accent.primary, bg = p.bg_subtle, bold = true })
+  hl("NeogitCursorLine", { bg = p.cursor_line })
+  hl("NeogitCursorLineNr", { fg = p.fg_dim })
+  hl("NeogitActiveItem", { fg = p.accent.primary, bg = p.bg_highlight, bold = true })
+
+  -- Neogit Hunk & Diff Headers (replaces glaring gray slabs)
+  hl("NeogitHunkHeader", { fg = p.fg_dim, bg = p.bg_subtle, bold = true })
+  hl("NeogitHunkHeaderHighlight", { fg = p.accent.primary, bg = p.bg_highlight, bold = true })
+  hl("NeogitHunkHeaderCursor", { fg = p.accent.primary, bg = p.bg_highlight, bold = true })
+  hl("NeogitHunkMergeHeader", { fg = p.fg_dim, bg = p.bg_subtle, bold = true })
+  hl("NeogitHunkMergeHeaderHighlight", { fg = p.accent.primary, bg = p.bg_highlight, bold = true })
+  hl("NeogitHunkMergeHeaderCursor", { fg = p.accent.primary, bg = p.bg_highlight, bold = true })
+  hl("NeogitDiffHeader", { fg = p.fg_bright, bg = p.bg_subtle, bold = true })
+  hl("NeogitDiffHeaderHighlight", { fg = p.accent.primary, bg = p.bg_highlight, bold = true })
+
+  -- Neogit Diff Context & Lines
+  hl("NeogitDiffContext", { bg = p.bg })
+  hl("NeogitDiffContextHighlight", { bg = p.bg_dim })
+  hl("NeogitDiffContextCursor", { bg = p.bg_subtle })
+
+  -- Neogit Additions & Deletions
+  hl("NeogitDiffAdd", { fg = p.diff.add_fg, bg = p.diff.add_bg })
+  hl("NeogitDiffAddHighlight", { fg = p.diff.add_fg, bg = p.diff.add_bg })
+  hl("NeogitDiffAddCursor", { fg = p.diff.add_fg, bg = p.diff.add_inline })
+  hl("NeogitDiffAddInline", { fg = p.diff.add_fg, bg = p.diff.add_inline, bold = true })
+
+  hl("NeogitDiffDelete", { fg = p.diff.del_fg, bg = p.diff.del_bg })
+  hl("NeogitDiffDeleteHighlight", { fg = p.diff.del_fg, bg = p.diff.del_bg })
+  hl("NeogitDiffDeleteCursor", { fg = p.diff.del_fg, bg = p.diff.del_inline })
+  hl("NeogitDiffDeleteInline", { fg = p.diff.del_fg, bg = p.diff.del_inline, bold = true })
+
+  -- Neogit Navigation & Metadata
+  hl("NeogitSectionHeader", { fg = p.accent.primary, bold = true })
+  hl("NeogitSectionHeaderCount", { fg = p.accent.primary })
+  hl("NeogitHeading", { fg = p.accent.primary, bold = true })
+  hl("NeogitCommitViewHeader", { fg = p.fg_bright, bg = p.bg_subtle, bold = true })
+  hl("NeogitCommitViewDescription", { fg = p.accent.warm_dim })
+  hl("NeogitFilePath", { fg = p.accent.primary, italic = true })
+  hl("NeogitBranch", { fg = p.accent.primary, bold = true })
+  hl("NeogitBranchHead", { fg = p.accent.primary, bold = true, underline = true })
+  hl("NeogitRemote", { fg = p.diagnostic.hint, bold = true })
+  hl("NeogitObjectId", { fg = p.fg_muted })
+  hl("NeogitStash", { fg = p.fg_muted })
+  hl("NeogitRebaseDone", { fg = p.fg_muted })
+
+  -- Neogit Status Changes
+  hl("NeogitChangeModified", { fg = p.diagnostic.warn })
+  hl("NeogitChangeAdded", { fg = p.diagnostic.hint })
+  hl("NeogitChangeDeleted", { fg = p.diagnostic.error })
+  hl("NeogitChangeRenamed", { fg = p.diagnostic.info })
+  hl("NeogitChangeUpdated", { fg = p.diagnostic.warn })
+  hl("NeogitChangeCopied", { fg = p.diagnostic.hint })
+  hl("NeogitChangeNewFile", { fg = p.diagnostic.hint })
+  hl("NeogitChangeUnmerged", { fg = p.diagnostic.error })
 
   -- Mini.nvim
   hl("MiniCursorword", { underline = true })
@@ -485,25 +551,25 @@ function M.build(p)
   hl("Statement", { fg = p.accent.primary })
   hl("Conditional", { fg = p.accent.primary })
   hl("Repeat", { fg = p.accent.primary })
-  hl("Label", { fg = p.accent.tertiary })
+  hl("Label", { fg = p.fg_dim })
   hl("Operator", { fg = p.fg_dim })
   hl("Keyword", { fg = p.accent.primary })
   hl("Exception", { fg = p.accent.primary })
 
-  hl("PreProc", { fg = p.accent.secondary })
-  hl("Include", { fg = p.accent.secondary })
-  hl("Define", { fg = p.accent.secondary })
-  hl("Macro", { fg = p.accent.secondary, italic = true })
-  hl("PreCondit", { fg = p.accent.secondary })
+  hl("PreProc", { fg = p.fg_dim, italic = true })
+  hl("Include", { fg = p.accent.primary })
+  hl("Define", { fg = p.accent.primary })
+  hl("Macro", { fg = p.accent.primary, italic = true })
+  hl("PreCondit", { fg = p.fg_dim, italic = true })
 
-  hl("Type", { fg = p.accent.tertiary })
-  hl("StorageClass", { fg = p.accent.secondary })
-  hl("Structure", { fg = p.accent.tertiary })
-  hl("Typedef", { fg = p.accent.tertiary })
+  hl("Type", { fg = p.fg_bright })
+  hl("StorageClass", { fg = p.accent.primary })
+  hl("Structure", { fg = p.fg_bright })
+  hl("Typedef", { fg = p.fg_bright })
 
   hl("Special", { fg = p.fg_dim })
   hl("SpecialChar", { fg = p.accent.warm })
-  hl("Tag", { fg = p.accent.tertiary })
+  hl("Tag", { fg = p.fg_bright })
   hl("Delimiter", { fg = p.fg_dim })
   hl("SpecialComment", { fg = p.fg_dim, italic = true })
   hl("Debug", { fg = p.diagnostic.error })

@@ -181,6 +181,7 @@ Built-in highlights for:
 - [mini.nvim](https://github.com/echasnovski/mini.nvim)
 - [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
 - [diffview.nvim](https://github.com/sindrets/diffview.nvim)
+- [Neogit](https://github.com/NeogitOrg/neogit)
 
 ## License
 
